@@ -1,8 +1,8 @@
 <template>
   <v-container max-width="1200">
     <div class="d-flex justify-end">
-      <v-btn class="mr-4" color="primary" @click="openDialog()">Create</v-btn>
-      <v-btn @click="logout">Logout</v-btn>
+      <v-btn class="mr-4" color="primary" @click="openDialog()">{{ $t("dashboard.create") }}</v-btn>
+      <v-btn @click="logout">{{ $t("dashboard.logout") }}</v-btn>
     </div>
     <v-data-table :items="trips" :headers="headers">
       <template #item.departure="{ item }">
@@ -28,10 +28,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { useTripStore } from "../stores/trips";
 import { useAuthStore } from "../stores/auth";
 import TripDialog from "../components/TripDialog.vue";
 import { useRouter } from "vue-router";
+
+const { t } = useI18n();
 
 const tripStore = useTripStore();
 const auth = useAuthStore();
@@ -42,15 +45,15 @@ const selectedTrip = ref(null);
 const messages = ref([]);
 const trips = computed(() => tripStore.trips);
 
-const headers = [
-  { title: "Origin", key: "origin" },
-  { title: "Destination", key: "destination" },
-  { title: "Departure", key: "departure" },
-  { title: "Return", key: "returnDate" },
-  { title: "Price", key: "price" },
-  { title: "Work Trip", key: "isWorkTrip" },
-  { title: "Actions", key: "actions" }
-];
+const headers = computed(() => [
+  { title: t("dashboard.columns.origin"), key: "origin" },
+  { title: t("dashboard.columns.destination"), key: "destination" },
+  { title: t("dashboard.columns.departure"), key: "departure" },
+  { title: t("dashboard.columns.return"), key: "returnDate" },
+  { title: t("dashboard.columns.price"), key: "price" },
+  { title: t("dashboard.columns.workTrip"), key: "isWorkTrip" },
+  { title: t("dashboard.columns.actions"), key: "actions" },
+]);
 
 onMounted(() => {
   tripStore.fetchTrips();
@@ -72,21 +75,21 @@ const saveTrip = async (data) => {
       await tripStore.updateTrip(data.id, data);
       messages.value.push({
         color: "success",
-        text: "Trip updated successfully",
+        text: t("dashboard.tripUpdated"),
         timeout: 3000,
       });
     } else {
       await tripStore.createTrip(data);
       messages.value.push({
         color: "success",
-        text: "Trip created successfully",
+        text: t("dashboard.tripCreated"),
         timeout: 3000,
       });
     }
   } catch (err) {
     messages.value.push({
       color: "error",
-      text: data.id ? "Error updating trip" : "Error creating trip",
+      text: data.id ? t("dashboard.errorUpdating") : t("dashboard.errorCreating"),
       timeout: 3000,
     });
   } finally {
@@ -99,13 +102,13 @@ const remove = async (id) => {
     await tripStore.deleteTrip(id);
     messages.value.push({
       color: "success",
-      text: "Trip deleted successfully",
+      text: t("dashboard.tripDeleted"),
       timeout: 3000,
     });
   } catch (err) {
     messages.value.push({
       color: "error",
-      text: "Error deleting trip",
+      text: t("dashboard.errorDeleting"),
       timeout: 3000,
     });
   }

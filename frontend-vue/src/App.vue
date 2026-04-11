@@ -1,13 +1,16 @@
 <template>
   <v-app>
     <v-main>
+      <div style="position: fixed; top: 16px; right: 16px; z-index: 1300;">
+        <LocaleSwitcher />
+      </div>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-// No need for any logic here for now, as this is just the main app component that renders the router view.
+import LocaleSwitcher from "./components/LocaleSwitcher.vue";
 </script>
 
 <style lang="scss">

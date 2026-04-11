@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogTitle,
@@ -23,6 +24,7 @@ const empty = {
 };
 
 export default function TripDialog({ open, trip, onClose, onSave }) {
+  const { t } = useTranslation();
   const [form, setForm] = useState(empty);
 
   useEffect(() => {
@@ -49,24 +51,24 @@ export default function TripDialog({ open, trip, onClose, onSave }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{form.id ? "Edit Trip" : "Create Trip"}</DialogTitle>
+      <DialogTitle>{form.id ? t("tripDialog.titleEdit") : t("tripDialog.titleCreate")}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          <TextField label="Origin" value={form.origin} onChange={set("origin")} fullWidth />
-          <TextField label="Destination" value={form.destination} onChange={set("destination")} fullWidth />
+          <TextField label={t("tripDialog.origin")} value={form.origin} onChange={set("origin")} fullWidth />
+          <TextField label={t("tripDialog.destination")} value={form.destination} onChange={set("destination")} fullWidth />
           <DatePicker
-            label="Departure Date"
+            label={t("tripDialog.departureDate")}
             value={form.departure}
             onChange={(v) => setForm((f) => ({ ...f, departure: v }))}
             slotProps={{ textField: { fullWidth: true } }}
           />
           <DatePicker
-            label="Return Date"
+            label={t("tripDialog.returnDate")}
             value={form.returnDate}
             onChange={(v) => setForm((f) => ({ ...f, returnDate: v }))}
             slotProps={{ textField: { fullWidth: true } }}
           />
-          <TextField label="Price" type="number" value={form.price} onChange={set("price")} fullWidth />
+          <TextField label={t("tripDialog.price")} type="number" value={form.price} onChange={set("price")} fullWidth />
           <FormControlLabel
             control={
               <Checkbox
@@ -74,14 +76,14 @@ export default function TripDialog({ open, trip, onClose, onSave }) {
                 onChange={(e) => setForm((f) => ({ ...f, isWorkTrip: e.target.checked }))}
               />
             }
-            label="Work Trip"
+            label={t("tripDialog.workTrip")}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t("tripDialog.cancel")}</Button>
         <Button variant="contained" color="primary" onClick={handleSave}>
-          Save
+          {t("tripDialog.save")}
         </Button>
       </DialogActions>
     </Dialog>

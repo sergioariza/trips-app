@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Container, Box, Button, Snackbar, Alert } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import TripDialog from "../components/TripDialog";
@@ -9,6 +10,7 @@ import { setTrips, removeTrip } from "../store/tripsSlice";
 import { logout } from "../store/authSlice";
 
 export default function DashboardView() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const trips = useSelector((state) => state.trips.trips);
@@ -40,14 +42,14 @@ export default function DashboardView() {
     try {
       if (data.id) {
         await putTrip(data.id, data);
-        setSnackbar({ severity: "success", text: "Trip updated successfully" });
+        setSnackbar({ severity: "success", text: t("dashboard.tripUpdated") });
       } else {
         await postTrip(data);
-        setSnackbar({ severity: "success", text: "Trip created successfully" });
+        setSnackbar({ severity: "success", text: t("dashboard.tripCreated") });
       }
       await loadTrips();
     } catch {
-      setSnackbar({ severity: "error", text: data.id ? "Error updating trip" : "Error creating trip" });
+      setSnackbar({ severity: "error", text: data.id ? t("dashboard.errorUpdating") : t("dashboard.errorCreating") });
     } finally {
       setDialog(false);
     }
@@ -57,9 +59,9 @@ export default function DashboardView() {
     try {
       await deleteTrip(id);
       dispatch(removeTrip(id));
-      setSnackbar({ severity: "success", text: "Trip deleted successfully" });
+      setSnackbar({ severity: "success", text: t("dashboard.tripDeleted") });
     } catch {
-      setSnackbar({ severity: "error", text: "Error deleting trip" });
+      setSnackbar({ severity: "error", text: t("dashboard.errorDeleting") });
     }
   };
 
@@ -69,30 +71,30 @@ export default function DashboardView() {
   };
 
   const columns = [
-    { field: "origin", headerName: "Origin", flex: 1 },
-    { field: "destination", headerName: "Destination", flex: 1 },
+    { field: "origin", headerName: t("dashboard.columns.origin"), flex: 1 },
+    { field: "destination", headerName: t("dashboard.columns.destination"), flex: 1 },
     {
       field: "departure",
-      headerName: "Departure",
+      headerName: t("dashboard.columns.departure"),
       flex: 1,
       valueFormatter: (params) => new Date(params.value).toLocaleDateString()
     },
     {
       field: "returnDate",
-      headerName: "Return",
+      headerName: t("dashboard.columns.return"),
       flex: 1,
       valueFormatter: (params) => new Date(params.value).toLocaleDateString()
     },
-    { field: "price", headerName: "Price", flex: 1 },
+    { field: "price", headerName: t("dashboard.columns.price"), flex: 1 },
     {
       field: "isWorkTrip",
-      headerName: "Work Trip",
+      headerName: t("dashboard.columns.workTrip"),
       flex: 1,
-      valueFormatter: (params) => (params.value ? "Yes" : "No")
+      valueFormatter: (params) => (params.value ? t("dashboard.columns.yes") : t("dashboard.columns.no"))
     },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: t("dashboard.columns.actions"),
       flex: 1,
       sortable: false,
       renderCell: (params) => (
@@ -107,8 +109,8 @@ export default function DashboardView() {
   return (
     <Container>
       <Box display="flex" justifyContent="flex-end" gap={2} my={2}>
-        <Button variant="contained" color="primary" onClick={openDialog}>Create</Button>
-        <Button onClick={handleLogout}>Logout</Button>
+        <Button variant="contained" color="primary" onClick={openDialog}>{t("dashboard.create")}</Button>
+        <Button onClick={handleLogout}>{t("dashboard.logout")}</Button>
       </Box>
       <DataGrid
         rows={trips}

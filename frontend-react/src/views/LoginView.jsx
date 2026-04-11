@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Card,
@@ -16,6 +17,7 @@ import { loginRequest, registerRequest } from "../api/auth";
 import { setAuth } from "../store/authSlice";
 
 export default function LoginView() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
@@ -33,7 +35,7 @@ export default function LoginView() {
       dispatch(setAuth(res.data));
       navigate("/dashboard");
     } catch {
-      setSnackbar({ severity: "error", text: "Error during authentication" });
+      setSnackbar({ severity: "error", text: t("login.errorAuth") });
     }
   };
 
@@ -42,17 +44,17 @@ export default function LoginView() {
       <Card sx={{ width: 400 }}>
         <CardContent>
           <Typography variant="h6" mb={2}>
-            {isRegister ? "Sign Up" : "Login"}
+            {isRegister ? t("login.titleRegister") : t("login.title")}
           </Typography>
           <TextField
-            label="Email"
+            label={t("login.email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Password"
+            label={t("login.password")}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -61,10 +63,10 @@ export default function LoginView() {
           />
           <Box display="flex" justifyContent="space-between" mt={2}>
             <Button onClick={() => setIsRegister((v) => !v)}>
-              {isRegister ? "Login" : "Sign Up"}
+              {isRegister ? t("login.switchToLogin") : t("login.switchToRegister")}
             </Button>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
-              {isRegister ? "Register" : "Login"}
+              {isRegister ? t("login.register") : t("login.submit")}
             </Button>
           </Box>
         </CardContent>

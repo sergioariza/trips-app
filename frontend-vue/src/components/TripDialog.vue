@@ -2,31 +2,31 @@
   <v-dialog v-model="internalDialog">
     <v-card>
       <v-card-title>
-        {{ form.id ? "Edit Trip" : "Create Trip" }}
+        {{ form.id ? $t("tripDialog.titleEdit") : $t("tripDialog.titleCreate") }}
       </v-card-title>
 
       <v-card-text>
-        <v-text-field v-model="form.origin" label="Origin" />
-        <v-text-field v-model="form.destination" label="Destination" />
+        <v-text-field v-model="form.origin" :label="$t('tripDialog.origin')" />
+        <v-text-field v-model="form.destination" :label="$t('tripDialog.destination')" />
         <v-date-input
           v-model="form.departure"
           input-format="dd-mm-yyyy"
-          label="Departure Date"
+          :label="$t('tripDialog.departureDate')"
           prepend-icon=""
         />
         <v-date-input
           v-model="form.returnDate"
           input-format="dd-mm-yyyy"
-          label="Return Date"
+          :label="$t('tripDialog.returnDate')"
           prepend-icon=""
         />
-        <v-text-field v-model="form.price" label="Price" type="number" />
-        <v-checkbox v-model="form.isWorkTrip" label="Work Trip" />
+        <v-text-field v-model="form.price" :label="$t('tripDialog.price')" type="number" />
+        <v-checkbox v-model="form.isWorkTrip" :label="$t('tripDialog.workTrip')" />
       </v-card-text>
 
       <v-card-actions>
-        <v-btn @click="$emit('close')">Cancel</v-btn>
-        <v-btn color="primary" @click="submit">Save</v-btn>
+        <v-btn @click="$emit('close')">{{ $t("tripDialog.cancel") }}</v-btn>
+        <v-btn color="primary" @click="submit">{{ $t("tripDialog.save") }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
