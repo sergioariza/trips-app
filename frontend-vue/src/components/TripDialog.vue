@@ -63,23 +63,18 @@ const internalDialog = ref(false);
 
 const { handleSubmit, resetForm } = useForm();
 
-const { value: origin, errorMessage: originError } = useField("origin", (v) =>
-  v ? true : t("validation.required")
-);
-const { value: destination, errorMessage: destinationError } = useField("destination", (v) =>
-  v ? true : t("validation.required")
-);
-const { value: departure, errorMessage: departureError } = useField("departure", (v) =>
-  v ? true : t("validation.required")
-);
-const { value: returnDate, errorMessage: returnDateError } = useField("returnDate", (v) =>
-  v ? true : t("validation.required")
-);
-const { value: price, errorMessage: priceError } = useField("price", (v) => {
+const required = (v) => (v ? true : t("validation.required"));
+const priceValidator = (v) => {
   if (v === "" || v === null || v === undefined) return t("validation.required");
   if (Number(v) < 0) return t("validation.minPrice");
   return true;
-});
+};
+
+const { value: origin, errorMessage: originError } = useField("origin", required);
+const { value: destination, errorMessage: destinationError } = useField("destination", required);
+const { value: departure, errorMessage: departureError } = useField("departure", required);
+const { value: returnDate, errorMessage: returnDateError } = useField("returnDate", required);
+const { value: price, errorMessage: priceError } = useField("price", priceValidator);
 const { value: isWorkTrip } = useField("isWorkTrip");
 
 watch(
