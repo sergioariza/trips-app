@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   Dialog,
@@ -19,16 +20,16 @@ const empty = {
   destination: "",
   departure: null,
   returnDate: null,
-  price: 0,
+  price: undefined,
   isWorkTrip: false
 };
 
 export default function TripDialog({ open, trip, onClose, onSave }) {
   const { t } = useTranslation();
-  const [form, setForm] = useState(empty);
+  const { control, handleSubmit, reset } = useForm({ defaultValues: empty });
 
   useEffect(() => {
-    setForm(
+    reset(
       trip
         ? {
             ...trip,
@@ -37,55 +38,127 @@ export default function TripDialog({ open, trip, onClose, onSave }) {
           }
         : empty
     );
-  }, [trip, open]);
+  }, [trip, open, reset]);
 
-  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
-
-  const handleSave = () => {
+  const onSubmit = (data) => {
     onSave({
-      ...form,
-      departure: form.departure ? form.departure.toDate() : null,
-      returnDate: form.returnDate ? form.returnDate.toDate() : null
+      ...data,
+      departure: data.departure ? data.departure.toDate() : null,
+      returnDate: data.returnDate ? data.returnDate.toDate() : null
     });
   };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{form.id ? t("tripDialog.titleEdit") : t("tripDialog.titleCreate")}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2} sx={{ mt: 1 }}>
-          <TextField label={t("tripDialog.origin")} value={form.origin} onChange={set("origin")} fullWidth />
-          <TextField label={t("tripDialog.destination")} value={form.destination} onChange={set("destination")} fullWidth />
-          <DatePicker
-            label={t("tripDialog.departureDate")}
-            value={form.departure}
-            onChange={(v) => setForm((f) => ({ ...f, departure: v }))}
-            slotProps={{ textField: { fullWidth: true } }}
-          />
-          <DatePicker
-            label={t("tripDialog.returnDate")}
-            value={form.returnDate}
-            onChange={(v) => setForm((f) => ({ ...f, returnDate: v }))}
-            slotProps={{ textField: { fullWidth: true } }}
-          />
-          <TextField label={t("tripDialog.price")} type="number" value={form.price} onChange={set("price")} fullWidth />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={form.isWorkTrip}
-                onChange={(e) => setForm((f) => ({ ...f, isWorkTrip: e.target.checked }))}
-              />
-            }
-            label={t("tripDialog.workTrip")}
-          />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{t("tripDialog.cancel")}</Button>
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          {t("tripDialog.save")}
-        </Button>
-      </DialogActions>
+      <DialogTitle>{trip?.id ? t("tripDialog.titleEdit") : t("tripDialog.titleCreate")}</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <Controller
+              name="origin"
+              control={control}
+              rules={{ required: t("validation.required") }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label={t("tripDialog.origin")}
+                  fullWidth
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="destination"
+              control={control}
+              rules={{ required: t("validation.required") }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label={t("tripDialog.destination")}
+                  fullWidth
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="departure"
+              control={control}
+              rules={{ required: t("validation.required") }}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  label={t("tripDialog.departureDate")}
+                  value={field.value}
+                  onChange={field.onChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!fieldState.error,
+                      helperText: fieldState.error?.message
+                    }
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="returnDate"
+              control={control}
+              rules={{ required: t("validation.required") }}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  label={t("tripDialog.returnDate")}
+                  value={field.value}
+                  onChange={field.onChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!fieldState.error,
+                      helperText: fieldState.error?.message
+                    }
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="price"
+              control={control}
+              rules={{
+                required: t("validation.required"),
+                min: { value: 0, message: t("validation.minPrice") }
+              }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label={t("tripDialog.price")}
+                  type="number"
+                  fullWidth
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="isWorkTrip"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={field.value} onChange={field.onChange} />
+                  }
+                  label={t("tripDialog.workTrip")}
+                />
+              )}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>{t("tripDialog.cancel")}</Button>
+          <Button type="submit" variant="contained" color="primary">
+            {t("tripDialog.save")}
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }

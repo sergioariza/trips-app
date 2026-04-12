@@ -11,9 +11,12 @@
       <template #item.returnDate="{ item }">
         {{ new Date(item.returnDate).toLocaleDateString() }}
       </template>
+      <template #item.isWorkTrip="{ item }">
+        {{ item.isWorkTrip ? t("dashboard.columns.yes") : t("dashboard.columns.no") }}
+      </template>
       <template #item.actions="{ item }">
-        <v-btn class="mr-3" icon @click="edit(item)">✏️</v-btn>
-        <v-btn icon @click="remove(item.id)">🗑️</v-btn>
+        <v-btn variant="text" class="mr-3" icon @click="edit(item)">✏️</v-btn>
+        <v-btn variant="text" icon @click="remove(item.id)">🗑️</v-btn>
       </template>
     </v-data-table>
     <TripDialog
@@ -32,7 +35,7 @@ import { useI18n } from "vue-i18n";
 import { useTripStore } from "../stores/trips";
 import { useAuthStore } from "../stores/auth";
 import TripDialog from "../components/TripDialog.vue";
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"; 
 
 const { t } = useI18n();
 
@@ -43,8 +46,8 @@ const router = useRouter();
 const dialog = ref(false);
 const selectedTrip = ref(null);
 const messages = ref([]);
-const trips = computed(() => tripStore.trips);
 
+const trips = computed(() => tripStore.trips);
 const headers = computed(() => [
   { title: t("dashboard.columns.origin"), key: "origin" },
   { title: t("dashboard.columns.destination"), key: "destination" },

@@ -31,6 +31,10 @@
     "errorCreating": "Error al crear el viaje",
     "errorDeleting": "Error al eliminar el viaje"
   },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "minPrice": "El precio debe ser 0 o mayor"
+  },
   "tripDialog": {
     "titleEdit": "Editar Viaje",
     "titleCreate": "Crear Viaje",
