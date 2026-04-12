@@ -102,6 +102,7 @@ Runs on `http://localhost:5173`. API requests to `/api` are proxied to `http://l
 | UI components | Vuetify 3 |
 | State management | Pinia |
 | Routing | Vue Router 4 |
+| Form validation | VeeValidate |
 | Internationalisation | vue-i18n (EN / ES) |
 | HTTP | Axios |
 | Build | Vite + @vitejs/plugin-vue |
@@ -142,6 +143,7 @@ Runs on `http://localhost:5174` (or next available port). API requests to `/api`
 | Data table | @mui/x-data-grid |
 | State management | Redux Toolkit + React Redux |
 | Routing | React Router v6 |
+| Form validation | React Hook Form |
 | Internationalisation | i18next + react-i18next (EN / ES) |
 | HTTP | Axios |
 | Build | Vite + @vitejs/plugin-react |
