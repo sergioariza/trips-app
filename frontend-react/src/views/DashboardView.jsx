@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Container, Box, Button, Snackbar, Alert } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, esES, enUS } from "@mui/x-data-grid";
 import TripDialog from "../components/TripDialog";
 import { getTrips, postTrip, putTrip, deleteTrip } from "../api/trips";
 import { setTrips, removeTrip } from "../store/tripsSlice";
 import { logout } from "../store/authSlice";
 
 export default function DashboardView() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dataGridLocale = i18n.language === "es"
+    ? esES.components.MuiDataGrid.defaultProps.localeText
+    : enUS.components.MuiDataGrid.defaultProps.localeText;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const trips = useSelector((state) => state.trips.trips);
@@ -117,6 +120,7 @@ export default function DashboardView() {
         columns={columns}
         autoHeight
         disableRowSelectionOnClick
+        localeText={dataGridLocale}
       />
       <TripDialog
         open={dialog}
