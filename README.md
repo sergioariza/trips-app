@@ -148,6 +148,10 @@ Runs on `http://localhost:5174` (or next available port). API requests to `/api`
 | HTTP | Axios |
 | Build | Vite + @vitejs/plugin-react |
 
+### Testing
+
+- Added some Jest tests for `frontend-react`.
+
 ---
 
 ## Running the full stack
