@@ -13,8 +13,8 @@ import {
   Snackbar,
   Alert
 } from "@mui/material";
-import { loginRequest, registerRequest } from "../api/auth";
-import { setAuth } from "../store/authSlice";
+import { loginRequest, registerRequest } from "../../api/auth";
+import { setAuth } from "../../store/authSlice";
 
 export default function LoginView() {
   const { t } = useTranslation();
