@@ -1,0 +1,50 @@
+{
+  "login": {
+    "title": "Login",
+    "titleRegister": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "switchToLogin": "Login",
+    "switchToRegister": "Sign Up",
+    "submit": "Login",
+    "register": "Register",
+    "errorAuth": "Error during authentication"
+  },
+  "dashboard": {
+    "create": "Create",
+    "logout": "Logout",
+    "columns": {
+      "origin": "Origin",
+      "destination": "Destination",
+      "departure": "Departure",
+      "return": "Return",
+      "price": "Price",
+      "workTrip": "Work Trip",
+      "actions": "Actions",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "tripUpdated": "Trip updated successfully",
+    "tripCreated": "Trip created successfully",
+    "tripDeleted": "Trip deleted successfully",
+    "errorUpdating": "Error updating trip",
+    "errorCreating": "Error creating trip",
+    "errorDeleting": "Error deleting trip"
+  },
+  "validation": {
+    "required": "This field is required",
+    "minPrice": "Price must be 0 or greater"
+  },
+  "tripDialog": {
+    "titleEdit": "Edit Trip",
+    "titleCreate": "Create Trip",
+    "origin": "Origin",
+    "destination": "Destination",
+    "departureDate": "Departure Date",
+    "returnDate": "Return Date",
+    "price": "Price",
+    "workTrip": "Work Trip",
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}

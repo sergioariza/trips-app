@@ -1,0 +1,50 @@
+{
+  "login": {
+    "title": "Iniciar sesión",
+    "titleRegister": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "switchToLogin": "Iniciar sesión",
+    "switchToRegister": "Registrarse",
+    "submit": "Iniciar sesión",
+    "register": "Registrar",
+    "errorAuth": "Error durante la autenticación"
+  },
+  "dashboard": {
+    "create": "Crear",
+    "logout": "Cerrar sesión",
+    "columns": {
+      "origin": "Origen",
+      "destination": "Destino",
+      "departure": "Salida",
+      "return": "Regreso",
+      "price": "Precio",
+      "workTrip": "Viaje de trabajo",
+      "actions": "Acciones",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "tripUpdated": "Viaje actualizado correctamente",
+    "tripCreated": "Viaje creado correctamente",
+    "tripDeleted": "Viaje eliminado correctamente",
+    "errorUpdating": "Error al actualizar el viaje",
+    "errorCreating": "Error al crear el viaje",
+    "errorDeleting": "Error al eliminar el viaje"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "minPrice": "El precio debe ser 0 o mayor"
+  },
+  "tripDialog": {
+    "titleEdit": "Editar Viaje",
+    "titleCreate": "Crear Viaje",
+    "origin": "Origen",
+    "destination": "Destino",
+    "departureDate": "Fecha de salida",
+    "returnDate": "Fecha de regreso",
+    "price": "Precio",
+    "workTrip": "Viaje de trabajo",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  }
+}

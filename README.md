@@ -8,7 +8,8 @@ The project is split into three apps:
 trips-app/
 ├── backend/          Express REST API with Prisma + SQLite
 ├── frontend-vue/     Vue 3 frontend (Vuetify)
-└── frontend-react/   React frontend (MUI) — migrated from frontend-vue
+├── frontend-react-js/   React Javascript frontend (MUI)
+└── frontend-react-ts/   React Typescript frontend (MUI)
 ```
 
 ---
@@ -111,7 +112,12 @@ Runs on `http://localhost:5173`. API requests to `/api` are proxied to `http://l
 
 ## Frontend — React
 
-React migration of `frontend-vue`. Built with React, MUI, Redux Toolkit, and React Router. Bundled with Vite.
+This repository contains two React frontends that share the same user experience and API:
+
+- `frontend-react-js` — React (JavaScript) implementation using MUI.
+- `frontend-react-ts` — React (TypeScript) implementation using MUI.
+
+Both frontends are Vite projects using React, MUI, Redux Toolkit and React Router.
 
 ### Requirements
 
@@ -119,20 +125,25 @@ React migration of `frontend-vue`. Built with React, MUI, Redux Toolkit, and Rea
 - npm
 - Backend running on `http://localhost:3000`
 
-### Setup
+### Setup & Run
+
+JavaScript frontend (development):
 
 ```bash
-cd frontend-react
+cd frontend-react-js
 npm install
-```
-
-### Run
-
-```bash
 npm run dev
 ```
 
-Runs on `http://localhost:5174` (or next available port). API requests to `/api` are proxied to `http://localhost:3000`.
+TypeScript frontend (development):
+
+```bash
+cd frontend-react-ts
+npm install
+npm run dev
+```
+
+Runs on `http://localhost:5173` (or next available port). API requests to `/api` are proxied to `http://localhost:3000`.
 
 ### Stack
 
@@ -150,7 +161,7 @@ Runs on `http://localhost:5174` (or next available port). API requests to `/api`
 
 ### Testing
 
-- Added some Jest tests for `frontend-react`.
+- Added some Jest tests for `frontend-react-js` and `frontend-react-ts`.
 
 ---
 
@@ -165,6 +176,9 @@ cd backend && npm run dev
 # Terminal 2 — Vue frontend
 cd frontend-vue && npm run dev
 
-# Terminal 3 — React frontend
-cd frontend-react && npm run dev
+# Terminal 3 — React frontend (JS)
+cd frontend-react-js && npm run dev
+
+# Terminal 4 — React frontend (TS)
+cd frontend-react-ts && npm run dev
 ```
