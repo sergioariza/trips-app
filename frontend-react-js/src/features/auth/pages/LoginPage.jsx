@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Container,
@@ -13,31 +11,18 @@ import {
   Snackbar,
   Alert
 } from "@mui/material";
-import { loginRequest, registerRequest } from "../api";
-import { setAuth } from "../store/authSlice";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
-  const [snackbar, setSnackbar] = useState(null);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleSubmit = async () => {
-    try {
-      if (isRegister) {
-        await registerRequest(email, password);
-      }
-      const res = await loginRequest(email, password);
-      dispatch(setAuth(res.data));
-      navigate("/dashboard");
-    } catch {
-      setSnackbar({ severity: "error", text: t("login.errorAuth") });
-    }
-  };
+  const {
+    handleSubmit,
+		snackbar,
+		closeSnackbar
+  } = useAuth();
 
   return (
     <Container sx={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -65,7 +50,7 @@ export default function LoginPage() {
             <Button onClick={() => setIsRegister((v) => !v)}>
               {isRegister ? t("login.switchToLogin") : t("login.switchToRegister")}
             </Button>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
+            <Button variant="contained" color="primary" onClick={() => handleSubmit(isRegister, email, password)}>
               {isRegister ? t("login.register") : t("login.submit")}
             </Button>
           </Box>
@@ -74,10 +59,10 @@ export default function LoginPage() {
       <Snackbar
         open={!!snackbar}
         autoHideDuration={3000}
-        onClose={() => setSnackbar(null)}
+        onClose={closeSnackbar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert severity={snackbar?.severity} onClose={() => setSnackbar(null)}>
+        <Alert severity={snackbar?.severity} onClose={closeSnackbar}>
           {snackbar?.text}
         </Alert>
       </Snackbar>
