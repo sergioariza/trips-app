@@ -1,81 +1,29 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Container, Box, Button, Snackbar, Alert } from "@mui/material";
 import { DataGrid, esES, enUS } from "@mui/x-data-grid";
 import { dashboardColumns } from "../utils";
 import TripDialog from "../components/TripDialog";
-import { getTrips, postTrip, putTrip, deleteTrip } from "../api";
-import { setTrips, removeTrip } from "../store/tripsSlice";
-import { logout } from "../../auth/store/authSlice";
-import { AppDispatch, RootState } from "../../../app/store";
-import { Trip, TripPayload, SnackbarMessage } from "../../../types";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { useTrips } from "../hooks/useTrips";
 
 export default function DashboardPage() {
   const { t, i18n } = useTranslation();
   const dataGridLocale = i18n.language === "es"
     ? esES.components.MuiDataGrid.defaultProps.localeText
     : enUS.components.MuiDataGrid.defaultProps.localeText;
-
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const trips = useSelector((state: RootState) => state.trips.trips);
-  const [dialog, setDialog] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
-  const [snackbar, setSnackbar] = useState<SnackbarMessage | null>(null);
-
-  const loadTrips = async () => {
-    const res = await getTrips();
-    dispatch(setTrips(res.data));
-  };
-
-  useEffect(() => {
-    loadTrips();
-  }, []);
-
-  const openDialog = () => {
-    setSelectedTrip(null);
-    setDialog(true);
-  };
-
-  const edit = (trip: Trip) => {
-    setSelectedTrip(trip);
-    setDialog(true);
-  };
-
-  const saveTrip = async (data: TripPayload) => {
-    try {
-      if (data.id) {
-        await putTrip(data.id, data);
-        setSnackbar({ severity: "success", text: t("dashboard.tripUpdated") });
-      } else {
-        await postTrip(data);
-        setSnackbar({ severity: "success", text: t("dashboard.tripCreated") });
-      }
-      await loadTrips();
-    } catch {
-      setSnackbar({ severity: "error", text: data.id ? t("dashboard.errorUpdating") : t("dashboard.errorCreating") });
-    } finally {
-      setDialog(false);
-    }
-  };
-
-  const remove = async (id?: number) => {
-    if (id === undefined) return;
-    try {
-      await deleteTrip(id);
-      dispatch(removeTrip(id));
-      setSnackbar({ severity: "success", text: t("dashboard.tripDeleted") });
-    } catch {
-      setSnackbar({ severity: "error", text: t("dashboard.errorDeleting") });
-    }
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
+  const { handleLogout } = useAuth();
+  const {
+    trips,
+    dialog,
+    selectedTrip,
+    snackbar,
+    openDialog,
+    closeDialog,
+    editTrip,
+    saveTrip,
+    removeTrip,
+    closeSnackbar
+  } = useTrips();
 
   return (
     <Container>
@@ -85,7 +33,7 @@ export default function DashboardPage() {
       </Box>
       <DataGrid
         rows={trips}
-        columns={dashboardColumns(edit, remove, t)}
+        columns={dashboardColumns(editTrip, removeTrip, t)}
         autoHeight
         disableRowSelectionOnClick
         localeText={dataGridLocale}
@@ -93,16 +41,16 @@ export default function DashboardPage() {
       <TripDialog
         open={dialog}
         trip={selectedTrip}
-        onClose={() => setDialog(false)}
+        onClose={closeDialog}
         onSave={saveTrip}
       />
       <Snackbar
         open={!!snackbar}
         autoHideDuration={3000}
-        onClose={() => setSnackbar(null)}
+        onClose={closeSnackbar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert severity={snackbar?.severity} onClose={() => setSnackbar(null)}>
+        <Alert severity={snackbar?.severity} onClose={closeSnackbar}>
           {snackbar?.text}
         </Alert>
       </Snackbar>
