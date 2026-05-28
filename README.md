@@ -1,6 +1,6 @@
-# Trips App
+# Trip Stack
 
-A full-stack travel trip management application. Users can register, log in, and manage their personal trips (create, edit, delete). Each trip tracks origin, destination, departure and return dates, price, and whether it is a work trip.
+A full-stack travel management application where users can create, edit, and manage personal trips. It includes authentication and a REST API built with Express and Prisma, and explores multiple frontend implementations (Vue 3, React JavaScript, and React TypeScript) over a shared backend.
 
 The project is split into three apps:
 
@@ -167,7 +167,7 @@ Runs on `http://localhost:5173` (or next available port). API requests to `/api`
 
 ## Running the full stack
 
-Open three terminals and run each app simultaneously:
+Open four terminals and run each app simultaneously:
 
 ```bash
 # Terminal 1 — Backend
